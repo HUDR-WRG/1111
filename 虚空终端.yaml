@@ -161,6 +161,11 @@ rules:
   - DOMAIN,alt7-mtalk.google.com,FCM
   - DOMAIN,alt8-mtalk.google.com,FCM
 
+# steam
+  - DOMAIN,steamcdn-a.akamaihd.net,DIRECT
+  - DOMAIN-SUFFIX,steamserver.net,DIRECT
+  - GEOIP,CN,DIRECT
+
   - GEOSITE,geolocation-!cn,漏网之鱼
 
   - GEOIP,telegram,Telegram

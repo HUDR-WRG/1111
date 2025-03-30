@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>服务器导航</title>
+    <link rel="icon" href="favicon.png" type="image/png">
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com/3.4.3"></script>
+    <!-- Font Awesome via CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- SortableJS via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.1/Sortable.min.js"></script>
+
+    <style>
+        /* 自定义样式和动画 */
+        html {
+            scroll-behavior: smooth;
+            /* 平滑滚动 */
+        }
+
+        body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* 简单的淡入动画 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        /* 为动画添加延迟，使效果更明显 */
+        .fade-in-delay-1 {
+            animation-delay: 0.15s;
+            opacity: 0;
+        }
+
+        .fade-in-delay-2 {
+            animation-delay: 0.3s;
+            opacity: 0;
+        }
+
+        .fade-in-delay-3 {
+            animation-delay: 0.45s;
+            opacity: 0;
+        }
+
+        .fade-in-delay-4 {
+            animation-delay: 0.6s;
+            opacity: 0;
+        }
+
+        .fade-in-delay-5 {
+            animation-delay: 0.75s;
+            opacity: 0;
+        }
+
+        .fade-in-delay-6 {
+            animation-delay: 0.9s;
+            opacity: 0;
+        }
+
+        /* 自定义滚动条 (可选，增加现代感) */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        /* Firefox */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: #888 transparent;
+        }
+
+        /* 强制深色模式下滚动条颜色 */
+        html.dark ::-webkit-scrollbar-thumb {
+            background: #555;
+        }
+
+        html.dark ::-webkit-scrollbar-thumb:hover {
+            background: #777;
+        }
+
+        html.dark * {
+            scrollbar-color: #555 transparent;
+        }
+        
+        /* 拖拽相关样式 */
+        .sortable-ghost {
+            opacity: 0.4;
+            background: #c8e6c9 !important;
+        }
+        
+        .dark .sortable-ghost {
+            background: #2d3748 !important;
+        }
+        
+        .sortable-drag {
+            cursor: grabbing;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+        }
+        
+        .card-grab-handle {
+            cursor: grab;
+            display: none;
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            z-index: 10;
+            padding: 4px;
+            border-radius: 4px;
+            background-color: rgba(100, 100, 100, 0.1);
+            color: #888;
+        }
+        
+        .card-container:hover .card-grab-handle {
+            display: block;
+        }
+        
+        .dark .card-grab-handle {
+            background-color: rgba(200, 200, 200, 0.1);
+            color: #aaa;
+        }
+        
+        .card-container {
+            position: relative;
+        }
+    </style>
+    <script>
+        // Tailwind Dark Mode 配置
+        tailwind.config = {
+            darkMode: 'class', // 启用 class 策略
+            theme: {
+                extend: {
+                    colors: {
+                        // 可在此处定义自定义颜色
+                        'primary': {
+                            light: '#3B82F6', // 示例蓝色
+                            dark: '#60A5FA'
+                        },
+                        'background': {
+                            light: '#f8fafc', // 浅色背景 (稍灰)
+                            dark: '#0f172a'   // 深色背景 (稍蓝)
+                        },
+                        'card': {
+                            light: '#ffffff', // 浅色卡片
+                            dark: '#1e293b'  // 深色卡片
+                        },
+                        'text': {
+                            light: '#1f2937', // 浅色文本
+                            dark: '#e2e8f0'  // 深色文本
+                        },
+                        'muted': {
+                            light: '#6b7280', // 浅色次要文本
+                            dark: '#94a3b8'  // 深色次要文本
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark transition-colors duration-300">
+
+    <div class="flex flex-col min-h-screen">
+
+        <!-- 头部区域 -->
+        <header class="py-6 px-4 sm:px-6 lg:px-8">
+            <div class="container mx-auto flex justify-between items-center">
+                <h1 class="text-2xl sm:text-3xl font-bold text-primary-light dark:text-primary-dark">
+                    <i class="fas fa-server mr-2"></i>服务器导航
+                </h1>
+                <!-- 深色/浅色模式切换按钮 -->
+                <button id="theme-toggle" type="button"
+                    class="text-muted-light dark:text-muted-dark hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 transition-all duration-200 hover:scale-110">
+                    <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                    </svg>
+                    <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 5.05a1 1 0 00-1.414 1.414l.707.707a1 1 0 001.414-1.414l-.707-.707zm1.414 10.607a1 1 0 010-1.414l.707-.707a1 1 0 111.414 1.414l-.707.707a1 1 0 01-1.414 0zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                            fill-rule="evenodd" clip-rule="evenodd"></path>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- 主内容区域 -->
+        <main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+            <p class="text-center text-muted-light dark:text-muted-dark mb-8 sm:mb-12 text-lg">
+                快速访问我的常用服务
+            </p>
+
+            <!-- 服务卡片网格 -->
+            <div id="card-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+
+                <!-- 控制台 Card -->
+                <div class="card-container">
+                    <div class="card-grab-handle">
+                        <i class="fas fa-grip-vertical"></i>
+                    </div>
+                    <a href="#" target="_blank" rel="noopener noreferrer"
+                        class="fade-in fade-in-delay-1 group block bg-card-light dark:bg-card-dark rounded-xl shadow-sm hover:shadow-lg dark:hover:shadow-gray-700/50 border border-transparent hover:border-primary-light/30 dark:hover:border-primary-dark/30 p-6 transition-all duration-300 transform hover:-translate-y-1">
+                        <div class="flex items-center space-x-4">
+                            <div class="flex-shrink-0 text-primary-light dark:text-primary-dark text-2xl">
+                                <i class="fas fa-terminal w-8 h-8"></i>
+                            </div>
+                            <div>
+                                <h3
+                                    class="text-lg font-semibold text-text-light dark:text-text-dark group-hover:text-primary-light dark:group-hover:text-primary-dark transition-colors">
+                                    服务器控制台</h3>
+                                <p class="text-sm text-muted-light dark:text-muted-dark mt-1">直接访问服务器命令行</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- 1Panel Card -->
+                <div class="card-container">
+                    <div class="card-grab-handle">
+                        <i class="fas fa-grip-vertical"></i>
+                    </div>
+                    <a href="#" target="_blank" rel="noopener noreferrer"
+                        class="fade-in fade-in-delay-2 group block bg-card-light dark:bg-card-dark rounded-xl shadow-sm hover:shadow-lg dark:hover:shadow-gray-700/50 border border-transparent hover:border-primary-light/30 dark:hover:border-primary-dark/30 p-6 transition-all duration-300 transform hover:-translate-y-1">
+                        <div class="flex items-center space-x-4">
+                            <div class="flex-shrink-0 text-primary-light dark:text-primary-dark text-2xl">
+                                <i class="fas fa-tachometer-alt w-8 h-8"></i>
+                            </div>
+                            <div>
+                                <h3
+                                    class="text-lg font-semibold text-text-light dark:text-text-dark group-hover:text-primary-light dark:group-hover:text-primary-dark transition-colors">
+                                    1Panel 面板</h3>
+                                <p class="text-sm text-muted-light dark:text-muted-dark mt-1">现代化的 Linux 服务器运维管理面板</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Kutt Card -->
+                <div class="card-container">
+                    <div class="card-grab-handle">
+                        <i class="fas fa-grip-vertical"></i>
+                    </div>
+                    <a href="#" target="_blank" rel="noopener noreferrer"
+                        class="fade-in fade-in-delay-3 group block bg-card-light dark:bg-card-dark rounded-xl shadow-sm hover:shadow-lg dark:hover:shadow-gray-700/50 border border-transparent hover:border-primary-light/30 dark:hover:border-primary-dark/30 p-6 transition-all duration-300 transform hover:-translate-y-1">
+                        <div class="flex items-center space-x-4">
+                            <div class="flex-shrink-0 text-primary-light dark:text-primary-dark text-2xl">
+                                <i class="fas fa-link w-8 h-8"></i>
+                            </div>
+                            <div>
+                                <h3
+                                    class="text-lg font-semibold text-text-light dark:text-text-dark group-hover:text-primary-light dark:group-hover:text-primary-dark transition-colors">
+                                    Kutt 短链接</h3>
+                                <p class="text-sm text-muted-light dark:text-muted-dark mt-1">现代化的自托管 URL 缩短器</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Certd Card -->
+                <div class="card-container">
+                    <div class="card-grab-handle">
+                        <i class="fas fa-grip-vertical"></i>
+                    </div>
+                    <a href="#" target="_blank" rel="noopener noreferrer"
+                        class="fade-in fade-in-delay-4 group block bg-card-light dark:bg-card-dark rounded-xl shadow-sm hover:shadow-lg dark:hover:shadow-gray-700/50 border border-transparent hover:border-primary-light/30 dark:hover:border-primary-dark/30 p-6 transition-all duration-300 transform hover:-translate-y-1">
+                        <div class="flex items-center space-x-4">
+                            <div class="flex-shrink-0 text-primary-light dark:text-primary-dark text-2xl">
+                                <i class="fas fa-shield-alt w-8 h-8"></i>
+                            </div>
+                            <div>
+                                <h3
+                                    class="text-lg font-semibold text-text-light dark:text-text-dark group-hover:text-primary-light dark:group-hover:text-primary-dark transition-colors">
+                                    Certd 证书管理</h3>
+                                <p class="text-sm text-muted-light dark:text-muted-dark mt-1">自动化 SSL/TLS 证书申请与部署</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Vaultwarden Card -->
+                <div class="card-container">
+                    <div class="card-grab-handle">
+                        <i class="fas fa-grip-vertical"></i>
+                    </div>
+                    <a href="#" target="_blank" rel="noopener noreferrer"
+                        class="fade-in fade-in-delay-5 group block bg-card-light dark:bg-card-dark rounded-xl shadow-sm hover:shadow-lg dark:hover:shadow-gray-700/50 border border-transparent hover:border-primary-light/30 dark:hover:border-primary-dark/30 p-6 transition-all duration-300 transform hover:-translate-y-1">
+                        <div class="flex items-center space-x-4">
+                            <div class="flex-shrink-0 text-primary-light dark:text-primary-dark text-2xl">
+                                <i class="fas fa-key w-8 h-8"></i>
+                            </div>
+                            <div>
+                                <h3
+                                    class="text-lg font-semibold text-text-light dark:text-text-dark group-hover:text-primary-light dark:group-hover:text-primary-dark transition-colors">
+                                    Vaultwarden 密码库</h3>
+                                <p class="text-sm text-muted-light dark:text-muted-dark mt-1">自托管的 Bitwarden 兼容密码管理器</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Alist Card -->
+                <div class="card-container">
+                    <div class="card-grab-handle">
+                        <i class="fas fa-grip-vertical"></i>
+                    </div>
+                    <a href="#" target="_blank" rel="noopener noreferrer"
+                        class="fade-in fade-in-delay-6 group block bg-card-light dark:bg-card-dark rounded-xl shadow-sm hover:shadow-lg dark:hover:shadow-gray-700/50 border border-transparent hover:border-primary-light/30 dark:hover:border-primary-dark/30 p-6 transition-all duration-300 transform hover:-translate-y-1">
+                        <div class="flex items-center space-x-4">
+                            <div class="flex-shrink-0 text-primary-light dark:text-primary-dark text-2xl">
+                                <i class="fas fa-folder-open w-8 h-8"></i>
+                            </div>
+                            <div>
+                                <h3
+                                    class="text-lg font-semibold text-text-light dark:text-text-dark group-hover:text-primary-light dark:group-hover:text-primary-dark transition-colors">
+                                    Alist 文件列表</h3>
+                                <p class="text-sm text-muted-light dark:text-muted-dark mt-1">支持多种存储的文件列表程序</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+            </div>
+            <!-- 倒计时区域 -->
+            <div
+                class="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-8 mb-8 text-sm text-muted-light dark:text-muted-dark fade-in fade-in-delay-0 mt-3">
+                <div id="countdown-1" class="flex items-center">
+                    <i class="far fa-calendar-alt mr-2 opacity-75"></i>
+                    <span class="font-medium mr-1">距离事件A:</span>
+                    <span class="timer-values">计算中...</span>
+                </div>
+                <div id="countdown-2" class="flex items-center">
+                    <i class="far fa-calendar-alt mr-2 opacity-75"></i>
+                    <span class="font-medium mr-1">距离事件B:</span>
+                    <span class="timer-values">计算中...</span>
+                </div>
+            </div>
+            <!-- 倒计时区域结束 -->
+        </main>
+
+        <!-- 页脚 -->
+        <footer class="mt-auto py-6 px-4 sm:px-6 lg:px-8 border-t border-gray-200 dark:border-gray-700/50">
+            <div class="container mx-auto text-center text-sm text-muted-light dark:text-muted-dark">
+                我喜欢你
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        // === 深色/浅色模式切换逻辑 ===
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+        const htmlElement = document.documentElement; // 获取 <html> 元素
+
+        // 根据 localStorage 或系统偏好设置初始主题
+        function applyInitialTheme() {
+            const storedTheme = localStorage.getItem('theme');
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+            if (storedTheme === 'dark' || (!storedTheme && systemPrefersDark)) {
+                htmlElement.classList.add('dark');
+                themeToggleLightIcon.classList.remove('hidden');
+            } else {
+                htmlElement.classList.remove('dark');
+                themeToggleDarkIcon.classList.remove('hidden');
+            }
+        }
+
+        // 切换主题函数
+        function toggleTheme() {
+            const isDark = htmlElement.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+
+            // 更新按钮图标显示
+            themeToggleDarkIcon.classList.toggle('hidden', !isDark);
+            themeToggleLightIcon.classList.toggle('hidden', isDark);
+        }
+
+        // 添加按钮点击事件监听
+        themeToggleBtn.addEventListener('click', toggleTheme);
+
+        // 页面加载时应用初始主题
+        applyInitialTheme();
+
+        // === 卡片拖拽排序功能 ===
+        document.addEventListener('DOMContentLoaded', function() {
+            const cardGrid = document.getElementById('card-grid');
+            
+            // 1. 初始化 Sortable
+            const sortable = new Sortable(cardGrid, {
+                animation: 150,
+                handle: '.card-grab-handle', // 使用拖拽把手
+                ghostClass: 'sortable-ghost', // 占位元素的类名
+                dragClass: 'sortable-drag',   // 拖拽时元素的类名
+                easing: "cubic-bezier(1, 0, 0, 1)",
+                onEnd: function(evt) {
+                    // 保存排序后的顺序
+                    saveCardOrder();
+                }
+            });
+            
+            // 2. 获取卡片顺序
+            function getCardOrder() {
+                const cards = cardGrid.getElementsByClassName('card-container');
+                const order = [];
+                
+                for (let i = 0; i < cards.length; i++) {
+                    // 获取卡片的链接和标题作为标识符
+                    const link = cards[i].querySelector('a').getAttribute('href');
+                    const title = cards[i].querySelector('h3').textContent.trim();
+                    order.push({ link, title });
+                }
+                
+                return order;
+            }
+            
+            // 3. 保存卡片顺序到 localStorage
+            function saveCardOrder() {
+                const order = getCardOrder();
+                localStorage.setItem('cardOrder', JSON.stringify(order));
+            }
+            
+            // 4. 根据保存的顺序重新排序卡片
+            function applyCardOrder() {
+                const savedOrder = localStorage.getItem('cardOrder');
+                
+                if (!savedOrder) return; // 如果没有保存的顺序，使用默认顺序
+                
+                try {
+                    const order = JSON.parse(savedOrder);
+                    const cards = Array.from(cardGrid.getElementsByClassName('card-container'));
+                    
+                    // 创建一个映射来标识每个卡片
+                    const cardMap = cards.map(card => {
+                        const link = card.querySelector('a').getAttribute('href');
+                        const title = card.querySelector('h3').textContent.trim();
+                        return { element: card, link, title };
+                    });
+                    
+                    // 根据保存的顺序重新排列卡片
+                    order.forEach((item, index) => {
+                        const cardIndex = cardMap.findIndex(card => 
+                            card.link === item.link && card.title === item.title);
+                        
+                        if (cardIndex !== -1) {
+                            const card = cardMap[cardIndex].element;
+                            // 将卡片移动到正确的位置
+                            cardGrid.appendChild(card);
+                            // 从映射中删除已处理的卡片
+                            cardMap.splice(cardIndex, 1);
+                        }
+                    });
+                    
+                    // 将剩余的未匹配卡片添加到末尾
+                    cardMap.forEach(item => {
+                        cardGrid.appendChild(item.element);
+                    });
+                } catch (error) {
+                    console.error('恢复卡片顺序时出错:', error);
+                    // 出错时清除可能损坏的存储数据
+                    localStorage.removeItem('cardOrder');
+                }
+            }
+            
+            // 5. 页面加载时应用保存的卡片顺序
+            applyCardOrder();
+        });
+
+        // === (可选) 监听系统颜色模式变化 ===
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            // 只有在用户没有手动设置过主题时，才跟随系统变化
+            if (!localStorage.getItem('theme')) {
+                if (event.matches) {
+                    htmlElement.classList.add('dark');
+                    themeToggleDarkIcon.classList.add('hidden');
+                    themeToggleLightIcon.classList.remove('hidden');
+                } else {
+                    htmlElement.classList.remove('dark');
+                    themeToggleDarkIcon.classList.remove('hidden');
+                    themeToggleLightIcon.classList.add('hidden');
+                }
+            }
+        });
+        // === 倒计时功能 ===
+        function startCountdown(elementId, targetDateString, eventName, expiredMessage = "已结束") {
+            const countdownElement = document.getElementById(elementId);
+            if (!countdownElement) {
+                console.error(`Countdown element with ID "${elementId}" not found.`);
+                return;
+            }
+            const timerValueSpan = countdownElement.querySelector('.timer-values');
+            const eventNameSpan = countdownElement.querySelector('.font-medium');
+            const targetDate = new Date(targetDateString).getTime();
+
+            if (isNaN(targetDate)) {
+                console.error(`Invalid target date string for countdown "${elementId}": ${targetDateString}`);
+                timerValueSpan.textContent = "日期无效";
+                return;
+            }
+
+            if (eventNameSpan) {
+                eventNameSpan.textContent = `${eventName}:`; // 设置事件名称
+            }
+
+            let timerInterval = null; // <--- 使用 let 在顶部声明，并初始化为 null
+
+            function updateTimer() {
+                const now = new Date().getTime();
+                const distance = targetDate - now;
+
+                if (distance < 0) {
+                    timerValueSpan.textContent = expiredMessage;
+                    // 检查 timerInterval 是否有值（即定时器是否已启动）再清除
+                    if (timerInterval) {
+                        clearInterval(timerInterval);
+                        timerInterval = null; // 清除后重置变量是个好习惯
+                    }
+                    return; // 倒计时结束后停止更新逻辑
+                }
+
+                // 计算 天, 时, 分, 秒
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                // 格式化输出，保持简洁
+                timerValueSpan.textContent = `${days}天`;
+            }
+
+            updateTimer(); // 立即执行一次以显示初始值
+            // 只有在倒计时未结束时才启动定时器
+            if (targetDate - new Date().getTime() >= 0) {
+                // 将 setInterval 的返回值赋给之前声明的 timerInterval
+                timerInterval = setInterval(updateTimer, 1000);
+            }
+        }
+
+        // --- 配置你的倒计时 ---
+        // 请将下面的日期和事件名称替换为你需要的
+        // 日期格式建议: "YYYY-MM-DDTHH:MM:SS" (例如: "2025-01-01T00:00:00")
+        document.addEventListener('DOMContentLoaded', () => {
+            // 确保在 DOM 加载后再执行倒计时初始化
+            startCountdown('countdown-1', '2025-11-25T23:59:59', '事件A');
+            startCountdown('countdown-2', '2025-12-09T00:00:00', '事件B'); // 示例日期，请修改
+            // 你可以添加更多倒计时
+            // startCountdown('countdown-3', 'YYYY-MM-DDTHH:MM:SS', '事件C');
+        });
+        // --- 配置结束 ---
+
+    </script>
+
+</body>
+
+</html>

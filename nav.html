@@ -153,6 +153,37 @@
         .card-container {
             position: relative;
         }
+        
+        /* 编辑按钮样式 */
+        .edit-card-btn {
+            font-size: 0.9rem;
+            padding: 0.25rem;
+            border-radius: 0.25rem;
+            background-color: rgba(100, 100, 100, 0.05);
+            transition: all 0.2s ease;
+        }
+        
+        .dark .edit-card-btn {
+            background-color: rgba(200, 200, 200, 0.05);
+        }
+        
+        /* 模态框过渡效果 */
+        #card-modal > div > div {
+            transition: all 0.2s ease-out;
+        }
+        
+        /* 图标预览样式 */
+        #icon-preview {
+            transition: all 0.2s ease;
+        }
+        
+        #icon-preview:hover {
+            background-color: rgba(59, 130, 246, 0.2);
+        }
+        
+        .dark #icon-preview:hover {
+            background-color: rgba(96, 165, 250, 0.3);
+        }
     </style>
     <script>
         // Tailwind Dark Mode 配置
@@ -231,7 +262,7 @@
                     <div class="card-grab-handle">
                         <i class="fas fa-grip-vertical"></i>
                     </div>
-                    <a href="#" target="_blank" rel="noopener noreferrer"
+                    <a href="https://console.huaweicloud.com/smb/?agencyId=756088af6bc6453f9bb8a7581ae97958&region=ap-southeast-1&locale=zh-cn#/resource/plan/673de2088ba34a07738cec2b/overview" target="_blank" rel="noopener noreferrer"
                         class="fade-in fade-in-delay-1 group block bg-card-light dark:bg-card-dark rounded-xl shadow-sm hover:shadow-lg dark:hover:shadow-gray-700/50 border border-transparent hover:border-primary-light/30 dark:hover:border-primary-dark/30 p-6 transition-all duration-300 transform hover:-translate-y-1">
                         <div class="flex items-center space-x-4">
                             <div class="flex-shrink-0 text-primary-light dark:text-primary-dark text-2xl">
@@ -252,7 +283,7 @@
                     <div class="card-grab-handle">
                         <i class="fas fa-grip-vertical"></i>
                     </div>
-                    <a href="#" target="_blank" rel="noopener noreferrer"
+                    <a href="https://panel.zerotwo.me" target="_blank" rel="noopener noreferrer"
                         class="fade-in fade-in-delay-2 group block bg-card-light dark:bg-card-dark rounded-xl shadow-sm hover:shadow-lg dark:hover:shadow-gray-700/50 border border-transparent hover:border-primary-light/30 dark:hover:border-primary-dark/30 p-6 transition-all duration-300 transform hover:-translate-y-1">
                         <div class="flex items-center space-x-4">
                             <div class="flex-shrink-0 text-primary-light dark:text-primary-dark text-2xl">
@@ -273,7 +304,7 @@
                     <div class="card-grab-handle">
                         <i class="fas fa-grip-vertical"></i>
                     </div>
-                    <a href="#" target="_blank" rel="noopener noreferrer"
+                    <a href="https://kutt.zerotwo.me" target="_blank" rel="noopener noreferrer"
                         class="fade-in fade-in-delay-3 group block bg-card-light dark:bg-card-dark rounded-xl shadow-sm hover:shadow-lg dark:hover:shadow-gray-700/50 border border-transparent hover:border-primary-light/30 dark:hover:border-primary-dark/30 p-6 transition-all duration-300 transform hover:-translate-y-1">
                         <div class="flex items-center space-x-4">
                             <div class="flex-shrink-0 text-primary-light dark:text-primary-dark text-2xl">
@@ -294,7 +325,7 @@
                     <div class="card-grab-handle">
                         <i class="fas fa-grip-vertical"></i>
                     </div>
-                    <a href="#" target="_blank" rel="noopener noreferrer"
+                    <a href="https://certd.zerotwo.me" target="_blank" rel="noopener noreferrer"
                         class="fade-in fade-in-delay-4 group block bg-card-light dark:bg-card-dark rounded-xl shadow-sm hover:shadow-lg dark:hover:shadow-gray-700/50 border border-transparent hover:border-primary-light/30 dark:hover:border-primary-dark/30 p-6 transition-all duration-300 transform hover:-translate-y-1">
                         <div class="flex items-center space-x-4">
                             <div class="flex-shrink-0 text-primary-light dark:text-primary-dark text-2xl">
@@ -315,7 +346,7 @@
                     <div class="card-grab-handle">
                         <i class="fas fa-grip-vertical"></i>
                     </div>
-                    <a href="#" target="_blank" rel="noopener noreferrer"
+                    <a href="https://bit.zerotwo.me" target="_blank" rel="noopener noreferrer"
                         class="fade-in fade-in-delay-5 group block bg-card-light dark:bg-card-dark rounded-xl shadow-sm hover:shadow-lg dark:hover:shadow-gray-700/50 border border-transparent hover:border-primary-light/30 dark:hover:border-primary-dark/30 p-6 transition-all duration-300 transform hover:-translate-y-1">
                         <div class="flex items-center space-x-4">
                             <div class="flex-shrink-0 text-primary-light dark:text-primary-dark text-2xl">
@@ -336,7 +367,7 @@
                     <div class="card-grab-handle">
                         <i class="fas fa-grip-vertical"></i>
                     </div>
-                    <a href="#" target="_blank" rel="noopener noreferrer"
+                    <a href="https://zerotwo.me" target="_blank" rel="noopener noreferrer"
                         class="fade-in fade-in-delay-6 group block bg-card-light dark:bg-card-dark rounded-xl shadow-sm hover:shadow-lg dark:hover:shadow-gray-700/50 border border-transparent hover:border-primary-light/30 dark:hover:border-primary-dark/30 p-6 transition-all duration-300 transform hover:-translate-y-1">
                         <div class="flex items-center space-x-4">
                             <div class="flex-shrink-0 text-primary-light dark:text-primary-dark text-2xl">
@@ -352,6 +383,13 @@
                     </a>
                 </div>
                 
+            </div>
+            <!-- 添加卡片按钮 -->
+            <div class="fixed bottom-20 right-2 z-50 fade-in fade-in-delay-6">
+                <button id="add-card-btn" class="bg-primary-light dark:bg-primary-dark text-white px-4 py-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center space-x-2">
+                    <i class="fas fa-plus"></i>
+                    <span>添加卡片</span>
+                </button>
             </div>
             <!-- 倒计时区域 -->
             <div
@@ -500,6 +538,254 @@
             applyCardOrder();
         });
 
+        // === 自定义卡片管理功能 ===
+        document.addEventListener('DOMContentLoaded', function() {
+            const addCardBtn = document.getElementById('add-card-btn');
+            const cardModal = document.getElementById('card-modal');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            const cancelBtn = document.getElementById('cancel-btn');
+            const cardForm = document.getElementById('card-form');
+            const deleteCardBtn = document.getElementById('delete-card-btn');
+            const cardGrid = document.getElementById('card-grid');
+            
+            // 表单字段
+            const cardIdInput = document.getElementById('card-id');
+            const cardTitleInput = document.getElementById('card-title');
+            const cardDescriptionInput = document.getElementById('card-description');
+            const cardUrlInput = document.getElementById('card-url');
+            const cardIconInput = document.getElementById('card-icon');
+            const iconPreview = document.getElementById('icon-preview');
+            const modalTitle = document.getElementById('modal-title');
+            
+            // 1. 显示/隐藏模态框
+            function showModal() {
+                cardModal.classList.remove('hidden');
+                // 添加淡入动画
+                cardModal.querySelector('div > div').classList.add('scale-95', 'opacity-0');
+                setTimeout(() => {
+                    cardModal.querySelector('div > div').classList.remove('scale-95', 'opacity-0');
+                    cardModal.querySelector('div > div').classList.add('scale-100', 'opacity-100');
+                }, 10);
+            }
+            
+            function hideModal() {
+                // 添加淡出动画
+                cardModal.querySelector('div > div').classList.remove('scale-100', 'opacity-100');
+                cardModal.querySelector('div > div').classList.add('scale-95', 'opacity-0');
+                setTimeout(() => {
+                    cardModal.classList.add('hidden');
+                }, 200);
+                
+                // 重置表单
+                cardForm.reset();
+                cardIdInput.value = '';
+                deleteCardBtn.classList.add('hidden');
+                modalTitle.textContent = '添加新卡片';
+                // 重置图标预览
+                iconPreview.innerHTML = '<i class="fas fa-link"></i>';
+            }
+            
+            // 2. 添加事件监听器
+            addCardBtn.addEventListener('click', function() {
+                showModal();
+            });
+            
+            closeModalBtn.addEventListener('click', hideModal);
+            cancelBtn.addEventListener('click', hideModal);
+            
+            // 关闭模态框当点击背景
+            cardModal.addEventListener('click', function(e) {
+                if (e.target === cardModal) {
+                    hideModal();
+                }
+            });
+            
+            // 3. 图标预览功能
+            cardIconInput.addEventListener('input', function() {
+                const iconClass = this.value.trim();
+                if (iconClass) {
+                    iconPreview.innerHTML = `<i class="${iconClass}"></i>`;
+                } else {
+                    iconPreview.innerHTML = '<i class="fas fa-link"></i>'; // 默认图标
+                }
+            });
+            
+            // 4. 保存和加载自定义卡片
+            function saveCustomCards() {
+                const cards = Array.from(cardGrid.querySelectorAll('.custom-card')).map(card => {
+                    const link = card.querySelector('a').getAttribute('href');
+                    const title = card.querySelector('h3').textContent.trim();
+                    const description = card.querySelector('p').textContent.trim();
+                    const icon = card.querySelector('i').getAttribute('class');
+                    const cardId = card.dataset.cardId;
+                    
+                    return {
+                        id: cardId,
+                        title: title,
+                        description: description,
+                        url: link,
+                        icon: icon
+                    };
+                });
+                
+                localStorage.setItem('customCards', JSON.stringify(cards));
+            }
+            
+            function loadCustomCards() {
+                const savedCards = localStorage.getItem('customCards');
+                
+                if (!savedCards) return;
+                
+                try {
+                    const cards = JSON.parse(savedCards);
+                    
+                    cards.forEach(card => {
+                        addCardToGrid(card);
+                    });
+                } catch (error) {
+                    console.error('加载自定义卡片时出错:', error);
+                    localStorage.removeItem('customCards');
+                }
+            }
+            
+            // 5. 创建卡片并添加到网格
+            function addCardToGrid(cardData) {
+                // 检查是否已存在该卡片
+                const existingCard = document.querySelector(`.custom-card[data-card-id="${cardData.id}"]`);
+                if (existingCard) {
+                    // 更新现有卡片
+                    const link = existingCard.querySelector('a');
+                    link.setAttribute('href', cardData.url);
+                    
+                    const title = existingCard.querySelector('h3');
+                    title.textContent = cardData.title;
+                    
+                    const description = existingCard.querySelector('p');
+                    description.textContent = cardData.description;
+                    
+                    const icon = existingCard.querySelector('i');
+                    icon.setAttribute('class', cardData.icon);
+                    
+                    return;
+                }
+                
+                // 创建新卡片
+                const cardId = cardData.id || 'card_' + Date.now();
+                
+                const cardContainer = document.createElement('div');
+                cardContainer.className = 'card-container custom-card';
+                cardContainer.dataset.cardId = cardId;
+                
+                // 添加卡片内容
+                cardContainer.innerHTML = `
+                    <div class="card-grab-handle">
+                        <i class="fas fa-grip-vertical"></i>
+                    </div>
+                    <a href="${cardData.url}" target="_blank" rel="noopener noreferrer"
+                        class="fade-in group block bg-card-light dark:bg-card-dark rounded-xl shadow-sm hover:shadow-lg dark:hover:shadow-gray-700/50 border border-transparent hover:border-primary-light/30 dark:hover:border-primary-dark/30 p-6 transition-all duration-300 transform hover:-translate-y-1">
+                        <div class="flex items-center space-x-4">
+                            <div class="flex-shrink-0 text-primary-light dark:text-primary-dark text-2xl">
+                                <i class="${cardData.icon} w-8 h-8"></i>
+                            </div>
+                            <div>
+                                <h3
+                                    class="text-lg font-semibold text-text-light dark:text-text-dark group-hover:text-primary-light dark:group-hover:text-primary-dark transition-colors">
+                                    ${cardData.title}</h3>
+                                <p class="text-sm text-muted-light dark:text-muted-dark mt-1">${cardData.description}</p>
+                            </div>
+                            <button class="edit-card-btn ml-auto text-muted-light dark:text-muted-dark hover:text-primary-light dark:hover:text-primary-dark opacity-0 group-hover:opacity-100 transition-opacity">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </div>
+                    </a>
+                `;
+                
+                // 添加到卡片网格
+                cardGrid.appendChild(cardContainer);
+                
+                // 添加编辑按钮事件监听
+                const editBtn = cardContainer.querySelector('.edit-card-btn');
+                editBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    openEditCardModal(cardId);
+                });
+                
+                // 保存自定义卡片
+                saveCustomCards();
+            }
+            
+            // 6. 表单提交处理
+            cardForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const cardData = {
+                    id: cardIdInput.value || 'card_' + Date.now(),
+                    title: cardTitleInput.value.trim(),
+                    description: cardDescriptionInput.value.trim(),
+                    url: cardUrlInput.value.trim(),
+                    icon: cardIconInput.value.trim()
+                };
+                
+                addCardToGrid(cardData);
+                hideModal();
+            });
+            
+            // 7. 编辑卡片功能
+            function openEditCardModal(cardId) {
+                const card = document.querySelector(`.custom-card[data-card-id="${cardId}"]`);
+                if (!card) return;
+                
+                const title = card.querySelector('h3').textContent.trim();
+                const description = card.querySelector('p').textContent.trim();
+                const url = card.querySelector('a').getAttribute('href');
+                const icon = card.querySelector('i').getAttribute('class');
+                
+                // 填充表单
+                cardIdInput.value = cardId;
+                cardTitleInput.value = title;
+                cardDescriptionInput.value = description;
+                cardUrlInput.value = url;
+                cardIconInput.value = icon;
+                
+                // 更新图标预览
+                iconPreview.innerHTML = `<i class="${icon}"></i>`;
+                
+                // 显示删除按钮
+                deleteCardBtn.classList.remove('hidden');
+                
+                // 更改标题
+                modalTitle.textContent = '编辑卡片';
+                
+                // 显示模态框
+                showModal();
+            }
+            
+            // 8. 删除卡片功能
+            deleteCardBtn.addEventListener('click', function() {
+                const cardId = cardIdInput.value;
+                if (!cardId) return;
+                
+                const card = document.querySelector(`.custom-card[data-card-id="${cardId}"]`);
+                if (card) {
+                    // 添加删除动画
+                    card.style.transition = 'all 0.3s ease';
+                    card.style.opacity = '0';
+                    card.style.transform = 'scale(0.9)';
+                    
+                    setTimeout(() => {
+                        card.remove();
+                        saveCustomCards();
+                    }, 300);
+                }
+                
+                hideModal();
+            });
+            
+            // 9. 初始化加载自定义卡片
+            loadCustomCards();
+        });
+
         // === (可选) 监听系统颜色模式变化 ===
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
             // 只有在用户没有手动设置过主题时，才跟随系统变化
@@ -515,6 +801,7 @@
                 }
             }
         });
+
         // === 倒计时功能 ===
         function startCountdown(elementId, targetDateString, eventName, expiredMessage = "已结束") {
             const countdownElement = document.getElementById(elementId);
@@ -575,14 +862,74 @@
         // 日期格式建议: "YYYY-MM-DDTHH:MM:SS" (例如: "2025-01-01T00:00:00")
         document.addEventListener('DOMContentLoaded', () => {
             // 确保在 DOM 加载后再执行倒计时初始化
-            startCountdown('countdown-1', '2025-11-25T23:59:59', '事件A');
-            startCountdown('countdown-2', '2025-12-09T00:00:00', '事件B'); // 示例日期，请修改
+            startCountdown('countdown-1', '2025-11-25T23:59:59', '服务器到期');
+            startCountdown('countdown-2', '2025-12-09T00:00:00', '域名到期'); // 示例日期，请修改
             // 你可以添加更多倒计时
             // startCountdown('countdown-3', 'YYYY-MM-DDTHH:MM:SS', '事件C');
         });
         // --- 配置结束 ---
 
     </script>
+
+    <!-- 添加/编辑卡片的Modal对话框 -->
+    <div id="card-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-card-light dark:bg-card-dark rounded-xl shadow-xl max-w-md w-full mx-4 transform transition-all">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 id="modal-title" class="text-lg font-semibold text-text-light dark:text-text-dark">添加新卡片</h3>
+                    <button id="close-modal-btn" class="text-muted-light dark:text-muted-dark hover:text-text-light dark:hover:text-text-dark">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <form id="card-form" class="space-y-4">
+                    <input type="hidden" id="card-id" value="">
+                    
+                    <div>
+                        <label for="card-title" class="block text-sm font-medium text-text-light dark:text-text-dark mb-1">卡片标题 *</label>
+                        <input type="text" id="card-title" class="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-text-light dark:text-text-dark focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark" required>
+                    </div>
+                    
+                    <div>
+                        <label for="card-description" class="block text-sm font-medium text-text-light dark:text-text-dark mb-1">描述 *</label>
+                        <input type="text" id="card-description" class="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-text-light dark:text-text-dark focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark" required>
+                    </div>
+                    
+                    <div>
+                        <label for="card-url" class="block text-sm font-medium text-text-light dark:text-text-dark mb-1">链接 URL *</label>
+                        <input type="url" id="card-url" class="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-text-light dark:text-text-dark focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark" required>
+                    </div>
+                    
+                    <div>
+                        <label for="card-icon" class="block text-sm font-medium text-text-light dark:text-text-dark mb-1">图标 (Font Awesome) *</label>
+                        <div class="flex space-x-2">
+                            <input type="text" id="card-icon" class="flex-1 px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-text-light dark:text-text-dark focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark" placeholder="fas fa-link" required>
+                            <div id="icon-preview" class="flex items-center justify-center w-10 h-10 rounded-lg bg-primary-light/10 dark:bg-primary-dark/20 text-primary-light dark:text-primary-dark">
+                                <i class="fas fa-link"></i>
+                            </div>
+                        </div>
+                        <p class="text-xs text-muted-light dark:text-muted-dark mt-1">例如: fas fa-link, fas fa-server 等</p>
+                    </div>
+                    
+                    <div class="flex justify-between pt-2">
+                        <div>
+                            <button type="button" id="delete-card-btn" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors hidden">
+                                删除
+                            </button>
+                        </div>
+                        <div class="flex space-x-3">
+                            <button type="button" id="cancel-btn" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-text-light dark:text-text-dark rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+                                取消
+                            </button>
+                            <button type="submit" class="px-4 py-2 bg-primary-light dark:bg-primary-dark text-white rounded-lg hover:bg-blue-600 dark:hover:bg-blue-500 transition-colors">
+                                保存
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
 </body>
 
